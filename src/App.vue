@@ -23,10 +23,14 @@ export default {
   methods: {
     addOne() {
       // this.$store.commit('increase', { value: 10 });
-      this.$store.commit({
+      this.$store.dispatch({
         type: 'increment',
         value: 10,
       });
+      // this.$store.commit({
+      //   type: 'increment',
+      //   value: 10,
+      // });
     },
   },
 };

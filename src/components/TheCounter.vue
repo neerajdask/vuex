@@ -3,11 +3,13 @@
 </template>
 
  <script>
+import { mapGetters } from 'vuex';
 export default {
   computed: {
-    counter() {
-      return this.$store.state.finalCounter;
-    },
+    // counter() {
+    //   return this.$store.state.finalCounter;
+    // },
+    ...mapGetters([]),
   },
 };
 </script>
