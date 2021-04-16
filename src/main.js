@@ -4,11 +4,28 @@ import { createStore } from 'vuex';
 
 import App from './App.vue';
 
-const store = createStore({
+const counterModule = {
+  namedSpace: true,
   state() {
     return {
       counter: 0
     };
+  },
+  getters: {
+    finalCounter(state) {
+      return state.counter * 2;
+    },
+
+    normalizedCounter(_, getters) {
+      const finalCounter = getters.finalCounter;
+      if (finalCounter < 10) {
+        return 0;
+      } else if (finalCounter > 100) {
+        return 100;
+      } else {
+        return finalCounter;
+      }
+    }
   },
   actions: {
     increment(context) {
@@ -29,21 +46,34 @@ const store = createStore({
     increase(state, payload) {
       state.counter = state.counter + payload.value;
     }
+  }
+};
+
+const store = createStore({
+  modules: {
+    numbers: counterModule
+  },
+  state() {
+    return {
+      isLoggedIn: false
+    };
+  },
+  actions: {
+    login(context) {
+      context.commit('setAuth', { isAuth: true });
+    },
+    logout(context) {
+      context.commit('setAuth', { isAuth: false });
+    }
+  },
+  mutations: {
+    setAuth(state, payload) {
+      state.isLoggedIn = payload.isAuth;
+    }
   },
   getters: {
-    finalCounter(state) {
-      return state.counter * 2;
-    },
-
-    normalizedCounter(_, getters) {
-      const finalCounter = getters.finalCounter;
-      if (finalCounter < 10) {
-        return 0;
-      } else if (finalCounter > 100) {
-        return 100;
-      } else {
-        return finalCounter;
-      }
+    userIsAuthenticated(state) {
+      return state.isLoggedIn;
     }
   }
 });
